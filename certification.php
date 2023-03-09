@@ -60,7 +60,21 @@
               <i class="typcn typcn-bell mx-0"></i>
               <span class="count"></span>
             </a>
-            
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
+              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
+              
+              <a class="dropdown-item preview-item">
+                <div class="preview-thumbnail">
+                  <div class="preview-icon bg-info">
+                    <i class="typcn typcn-user mx-0"></i> 
+                  </div>
+                </div>
+                <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-normal">New Seller Registration</h6>
+                  
+                </div>
+              </a>
+            </div>
           </li>
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
@@ -69,7 +83,7 @@
       </div>
     </nav>
     <!-- partial -->
-     
+    
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
@@ -165,7 +179,8 @@
             </a>
             <div class="collapse" id="profile">
               <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="seller-address.php">Manage Address</a></li>
+                <li class="nav-item"> <a class="nav-link" href="seller-address.php">Add Address</a></li>
+                <li class="nav-item"> <a class="nav-link" href="certification.php">Registration Details</a></li>
               </ul>
             </div>
           </li>
@@ -175,67 +190,40 @@
         </ul>
       </nav>
       <!-- partial -->
-        <div class="main-panel">
+      <div class="main-panel">
         <div class="content-wrapper">
 
-        <div class="row">
-        <div class="col-xl-10 grid-margin stretch-card flex-column">
-        <a href="seller-profile.php" ><button type="submit" class="btn btn-dark" name="saveaddress" id="upload">Back</button></a>
+          <div class="row">
+            <div class="col-xl-20 grid-margin stretch-card flex-column">
+                
+             
+              <div class="row mt-10 tm-edit-product-row">
+              <div class="col-lg-12">
+</br>
+</br>
+</br>
+                <h6>Upload Registration Certificate</h6>
+</br>
+</br>
+                <form class="form-horizontal row-fluid" name="profileupdate" method="post" action="seller-profile.php"enctype="multipart/form-data">
 
-        <div class="row mt-15 tm-edit-product-row">
-       
-        <div class="d-flex p-2">
-        <div class="col-lg-12">
-        <form class="form-horizontal row-fluid" name="profileupdate" action="seller-address.php"method="post" enctype="multipart/form-data">
-        <?php
-        // $id=intval($_GET['id']);
-        $email=$_SESSION['email'];
-        $query=mysqli_query($conn,"SELECT * FROM users WHERE users.email = '$email'");
-        while($row=mysqli_fetch_array($query))
-        {
-        ?>
-        <div class="input-group mb-3">
-        <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
-        <input id="name" name="name" type="text" value="<?=$row['username']?>" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="housename" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">House Name</label>
-        <input id="housename" name="housename" type="text"  class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="postoffice" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Post Office</label>
-        <input id="postoffice" name="postoffice" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="locality" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Locality</label>
-        <input id="locality" name="locality" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="city" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">City</label>
-        <input id="city" name="city" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="district" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">District</label>
-        <input id="district" name="district" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="pincode" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Pincode</label>
-        <input id="pincode" name="pincode" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required >
-        </div>
+                <div class="input-group mb-3">
+                    <label for="file1"class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Certificate</label>
+                    <input type="file" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7-file" id="file1" name="file1">
+                </div>
 
-        <?php } ?>
-        <div class="input-group mb-3">
-        <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-        <button type="submit" class="btn btn-dark" name="saveaddress" id="upload">Save</button>
-        </div>
-        </div>
-        </form>
-        </div>
+</br></br>
 
-        </div>
+                <div class="input-group mb-3">
+                    <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
+                        <button type="submit" class="btn btn-dark" name="upload" id="upload">Save</button>
+                    </div>
+                </div>
+                </form>
 
-        </div>
-        </div>
+              
+            </div>
+          </div>
 
         </div>
         <!-- content-wrapper ends -->
@@ -267,45 +255,47 @@
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
-  <?php
-    
-    if(isset($_POST['saveaddress']))
-    {
-      $name= $_POST['name'];
-      $sql="SELECT user_id from users where username='$name'";
-      $res=$conn->query($sql);
-      if($res->num_rows>0)
-      {
-        while($row = $res-> fetch_assoc())
-        {
-            $user=$row['user_id'];
+  <script>
 
-      }
-      $housename = $_POST['housename'];
-      $postoffice = $_POST['postoffice'];
-      $locality = $_POST['locality'];
-      $city = $_POST['city'];
-      $district = $_POST['district'];
-        $pincode = $_POST['pincode'];
-        
-      $insert = mysqli_query($conn,"INSERT INTO address(user_id, housename, postoffice, locality, city, district, pincode) 
-      VALUES ($user,'$housename','$postoffice', '$locality', '$city', '$district', '$pincode')");
- 
-        if($insert)
-        {
-            echo'<script>alert("Address added")</script>';
-        }
-        else
-        {
-            echo'<script>alert("Address not added")</script>';
-        }
-        
-    } 
        
-    }    
+$(document).ready(function(){
+    $('#view').on('click', function(){
+      var prodID = $(this).val();
+          if(prodID){
+            $.ajax({
+                type:'POST',
+                url:'view-product.php',
+                data:'prodID='+prodID,
+                success:function(html){
+                    $('#productdetails').html(html); 
+                }
+              
+            }); 
+          }
+    });
     
-    
+});
+
+</script>
+<?php
+if(isset($_POST['update']))
+{
+   
+    $name=$_POST['name'];
+    $contact= $_POST['contact']; 
+    $email=$_POST['email'];    
+    $updateCat = mysqli_query($conn,"UPDATE users SET username='$name', contact_no='$contact' WHERE user_id=(select user_id from users where email='$email')");
+
+     if($updateCat)
+     {
+
+        echo'<script>alert("Profile updated!")</script>';
+     }
+     else
+     {
+        echo'<script>alert("Could not update profile!")</script>'; ;
+     }
+    }
 ?>
 </body>
 

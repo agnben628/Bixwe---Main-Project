@@ -1,11 +1,116 @@
 <?php    
     include "../dbconnect.php";
     session_start();
+    $id=$_GET['id'];
+    $count=0;
+    $qry=mysqli_query($conn, "SELECT * FROM product WHERE prod_id = $id ");
+	$numberOfRow=mysqli_num_rows($qry);
+	if($numberOfRow>0){
+		while($row1=mysqli_fetch_array($qry)){
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+<style>
+        .text-bold {
+            font-weight: 800;
+        }
+
+        text-color {
+            color: #0093c4;
+        }
+
+        /* Main image - left */
+        .main-img img {
+            width: 100%;
+        }
+
+        /* Preview images */
+        .previews img {
+            width: 100%;
+            height: 140px;
+        }
+
+        .main-description .category {
+            text-transform: uppercase;
+            color: #0093c4;
+        }
+
+        .main-description .product-title {
+            font-size: 2.5rem;
+        }
+
+        .old-price-discount {
+            font-weight: 600;
+        }
+
+        .new-price {
+            font-size: 2rem;
+        }
+
+        .details-title {
+            text-transform: uppercase;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #757575;
+        }
+
+        .buttons .block {
+            margin-right: 5px;
+        }
+
+        .quantity input {
+            border-radius: 0;
+            height: 40px;
+
+        }
+
+
+        .custom-btn {
+            text-transform: capitalize;
+            background-color: #0093c4;
+            color: white;
+            width: 150px;
+            height: 40px;
+            border-radius: 0;
+        }
+
+        .custom-btn:hover {
+            background-color: #0093c4 !important;
+            font-size: 14px;
+            color: white !important;
+        }
+
+        .similar-product img {
+            height: 400px;
+        }
+
+        .similar-product {
+            text-align: left;
+        }
+
+        .similar-product .title {
+            margin: 17px 0px 4px 0px;
+        }
+
+        .similar-product .price {
+            font-weight: bold;
+        }
+
+
+        /* Small devices (landscape phones, less than 768px) */
+        @media (max-width: 767.98px) {
+
+            /* Make preview images responsive  */
+            .previews img {
+                width: 100%;
+                height: auto;
+            }
+
+        }
+    </style>
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -13,6 +118,39 @@
   <!-- base:css -->
   <link rel="stylesheet" href="vendors/typicons/typicons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+  <!-- endinject -->
+  <!-- plugin css for this page -->
+  <!-- End plugin css for this page -->
+  <!-- inject:css -->
+  <link rel="stylesheet" href="css/vertical-layout-light/style.css">
+  <!-- endinject -->
+  <link rel="shortcut icon" href="images/favicon.png" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" 
+  integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" 
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Kumbh+Sans:wght@400;700&display=swap"
+      rel="stylesheet"
+    />
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-icons.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="vendors/typicons/typicons.css">
+  <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+  <link href="css/bootstrap-icons.css" rel="stylesheet">
+  
+  <link rel="stylesheet" href="productdetailstyle.css"/>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/css/bootstrap.min.css"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></script>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js"></script>
+  
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
@@ -55,13 +193,7 @@
             </a>
           </li>
           
-          <li class="nav-item dropdown mr-0">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="typcn typcn-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            
-          </li>
+          
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="typcn typcn-th-menu"></span>
@@ -69,7 +201,7 @@
       </div>
     </nav>
     <!-- partial -->
-     
+    
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
@@ -157,87 +289,63 @@
               </ul>
             </div>
           </li>
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="collapse" href="#profile" aria-expanded="false" aria-controls="charts">
-              <i class="typcn typcn-chart-pie-outline menu-icon"></i>
-              <span class="menu-title">Profile</span>
-              <i class="menu-arrow"></i>
-            </a>
-            <div class="collapse" id="profile">
-              <ul class="nav flex-column sub-menu">
-                <li class="nav-item"> <a class="nav-link" href="seller-address.php">Manage Address</a></li>
-              </ul>
-            </div>
-          </li>
           
           
           
         </ul>
       </nav>
       <!-- partial -->
-        <div class="main-panel">
-        <div class="content-wrapper">
-
+      <div class="main-panel">
+        <div class="content-wrapper">        
         <div class="row">
-        <div class="col-xl-10 grid-margin stretch-card flex-column">
-        <a href="seller-profile.php" ><button type="submit" class="btn btn-dark" name="saveaddress" id="upload">Back</button></a>
+        <div class="row mt-8 tm-edit-product-row">
+            <div class="d-flex p-2">
+                <form enctype='multipart/form-data' action="add-quantity.php?id=<?=$row1['prod_id']?>" method="POST" class="tm-edit-product-form">
+                    <div class="input-group mb-3">
+                        <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
+                        <input id="p_name" name="p_name" type="text" value="<?=$row1['product_name']?>"class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required pattern="^\S[a-zA-Z\s]*$">
+                    </div>
+                    
+                    
+                    
+                    <div class="input-group mb-3">
+                        <label for="color" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Color</label>
+                        <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="color" id="color">
+                            <option disabled selected>Select Color</option>
+                                <?php
+                                $sql="SELECT * from colour where status=1";
+                                $result = $conn-> query($sql);
 
-        <div class="row mt-15 tm-edit-product-row">
-       
-        <div class="d-flex p-2">
-        <div class="col-lg-12">
-        <form class="form-horizontal row-fluid" name="profileupdate" action="seller-address.php"method="post" enctype="multipart/form-data">
-        <?php
-        // $id=intval($_GET['id']);
-        $email=$_SESSION['email'];
-        $query=mysqli_query($conn,"SELECT * FROM users WHERE users.email = '$email'");
-        while($row=mysqli_fetch_array($query))
-        {
-        ?>
-        <div class="input-group mb-3">
-        <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
-        <input id="name" name="name" type="text" value="<?=$row['username']?>" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
+                                if ($result-> num_rows > 0){
+                                while($row = $result-> fetch_assoc()){
+                                echo "<option value='".$row['color_id']."'>".$row['color_name'] ."</option>";
+                                }
+                                }
+                                ?>
+                        </select>
+                    </div>
+                        
+                      
+                    </div>
+                    <div class="input-group mb-3">
+                      <input type="submit" value="Save" name="addcolor" id="addcolor" class="btn btn-primary"></input>
+                    </div>
+                </form>
+            </div>
         </div>
-        <div class="input-group mb-3">
-        <label for="housename" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">House Name</label>
-        <input id="housename" name="housename" type="text"  class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="postoffice" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Post Office</label>
-        <input id="postoffice" name="postoffice" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="locality" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Locality</label>
-        <input id="locality" name="locality" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="city" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">City</label>
-        <input id="city" name="city" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="district" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">District</label>
-        <input id="district" name="district" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required pattern="^\S[a-zA-Z\s]*$">
-        </div>
-        <div class="input-group mb-3">
-        <label for="pincode" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Pincode</label>
-        <input id="pincode" name="pincode" type="text" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7"required >
-        </div>
-
-        <?php } ?>
-        <div class="input-group mb-3">
-        <div class="ml-auto col-xl-8 col-lg-8 col-md-8 col-sm-7 pl-0">
-        <button type="submit" class="btn btn-dark" name="saveaddress" id="upload">Save</button>
-        </div>
-        </div>
-        </form>
-        </div>
-
-        </div>
-
-        </div>
-        </div>
-
-        </div>
+                            
+            <div class="col-md-12">
+              <div class="card">
+              <div id="invoice">
+                
+                </div>
+                
+            </div>
+          </div>
+          <?php
+    }
+  }
+  ?>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
         <footer class="footer">
@@ -267,41 +375,66 @@
   <!-- Custom js for this page-->
   <script src="js/dashboard.js"></script>
   <!-- End custom js for this page-->
-  
-  <?php
-    
-    if(isset($_POST['saveaddress']))
-    {
-      $name= $_POST['name'];
-      $sql="SELECT user_id from users where username='$name'";
-      $res=$conn->query($sql);
-      if($res->num_rows>0)
-      {
-        while($row = $res-> fetch_assoc())
-        {
-            $user=$row['user_id'];
 
-      }
-      $housename = $_POST['housename'];
-      $postoffice = $_POST['postoffice'];
-      $locality = $_POST['locality'];
-      $city = $_POST['city'];
-      $district = $_POST['district'];
-        $pincode = $_POST['pincode'];
+<script>
+window.onload = function () {
+    document.getElementById("download")
+        .addEventListener("click", () => {
+            const invoice = this.document.getElementById("invoice");
+            console.log(invoice);
+            console.log(window);
+            var opt = {
+                margin: 1,
+                filename: 'report.pdf',
+                image: { type: 'jpeg', quality: 0.99 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a3', orientation: 'l' }
+            };
+            html2pdf().from(invoice).set(opt).save();
+        })
+}
+$(document).ready(function(){
+    $('#add-qty').on('click', function(){
         
-      $insert = mysqli_query($conn,"INSERT INTO address(user_id, housename, postoffice, locality, city, district, pincode) 
-      VALUES ($user,'$housename','$postoffice', '$locality', '$city', '$district', '$pincode')");
+        
+            $.ajax({
+                type:'POST',
+                url:'add-quantity.php',
+                success:function(html){
+                    $('#quantityform').html(html); 
+                }
+            }); 
+        
+    });
+    
+});
+</script>
+<?php
+    
+    if(isset($_POST['addcolor']))
+    {
+      $prod= $_GET['id'];
+     $color = $_POST['color'];
+      
+      $insert = mysqli_query($conn,"INSERT INTO product_color_var(product_id, color_id) 
+      VALUES ($prod,$color)");
  
         if($insert)
         {
-            echo'<script>alert("Address added")</script>';
+        echo "<p id='d' >" ."Product variation added succesfully"."</p>" ;
         }
         else
         {
-            echo'<script>alert("Address not added")</script>';
+        echo "<p id='d' >" ."Could not add product variation"."</p>" ;
         }
-        
-    } 
+        echo'<script>const response = confirm("Do you want to add more?")</script>';
+        echo'<script> 
+        count=0;
+        if (response) {
+          count=count+1;
+      } else {
+          
+      }</script>';  
        
     }    
     

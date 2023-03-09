@@ -53,32 +53,12 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-date dropdown">
             <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
-              <h6 class="date mb-0"><?php echo "Today is " . date("Y / m / d") . "<br>";?></h6>
+              <h6 class="date mb-0"><?php echo "Today is " . date("d / m / Y") . "<br>";?></h6>
               <i class="typcn typcn-calendar"></i>
             </a>
           </li>
           
-          <li class="nav-item dropdown mr-0">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="typcn typcn-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="typcn typcn-user mx-0"></i> 
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New Seller Registration</h6>
-                  
-                </div>
-              </a>
-            </div>
-          </li>
+          
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="typcn typcn-th-menu"></span>
@@ -86,29 +66,7 @@
       </div>
     </nav>
     <!-- partial -->
-    <nav class="navbar-breadcrumb col-xl-12 col-12 d-flex flex-row p-0">
-      
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item ml-0">
-            <h4 class="mb-0">Dashboard</h4>
-          </li>
-          
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-search d-none d-md-block mr-0">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search..." aria-label="search" aria-describedby="search">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
-                  <i class="typcn typcn-zoom"></i>
-                </span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
@@ -178,6 +136,9 @@
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="seller-product-view.php">View</a></li>
+                <li class="nav-item"><a class="nav-link" href="analysis.php"> Product Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="salesreport.php">Sales Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="sentiment.php">Feedback</a></li>
               </ul>
             </div>
           </li>
@@ -202,15 +163,49 @@
       <div class="main-panel">
         <div class="content-wrapper">        
         <div class="row">
-        <div class="col-md-12 col-sm-12 text-left">
-                                <a class="btn btn-danger" id="add">Add</a>
-                            </div>
-                            <div class="col-md-12 text-right mb-3">
-                <button class="btn btn-primary" id="download">Report</button>
-            </div>
-                            <div id = "productform"></div>
+        <div class="d-flex p-2">
+        <?php
+            $user=$_SESSION['username'];    
+            $sql="SELECT * from users, seller where role='Seller' and users.user_id=seller.user_id and users.user_id=(select user_id from users where username='$user')";
+            $result=$conn-> query($sql);
+            $count=1;
+            if ($result-> num_rows > 0){
+            while ($row=$result-> fetch_assoc()) {
+              $status=$row['approval_status'];
+              if($status == 1)
+              {
+        ?>
+          <div class="col-md-12 col-sm-12 text-left ">
+            <a class="btn btn-primary" id="add">Add</a>
+          </div></br>
+       
+          <div class="col-md-12 col-sm-12 text-left">
+            <a href="manage-stock.php" class="btn btn-primary">Manage Stock</a>
+          </div></br>
+          <div class="col-md-12 text-left mb-3">
+            <button class="btn btn-primary" id="download">Report</button>
+          </div>
+          <?php
+              }
+              else{
+                ?>
+                <p style="color:red;">You are not approved yet</p>
+                <?php
+              }
+            }
+          }
+?>
+</div>
+          <?php                  
+                        $brand1 = $_SESSION['username'];
+                        $sql = "SELECT user_id FROM users where username = '$brand1'";
+                        $result1 = $conn-> query($sql);
+                        if ($result1-> num_rows > 0){
+                        while($row1 = $result1-> fetch_assoc()){
+                          $brand = $row1['user_id']; ?>        
             <div class="col-md-12">
               <div class="card">
+              <div id = "productform"></div>
               <div id="invoice">
                 <div class="table-responsive pt-3">
                  
@@ -224,14 +219,14 @@
                         <th>Product Description</th>
                         <th>Category</th>
                         <th>Sub Category	</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
+                       
                         <th colspan=3>Action</th>
                       </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $query = "SELECT * FROM product,subcategory,category WHERE product.category=category.category_id AND product.subcategory=subcategory.sub_category_id" ;
+                        
+                        $query = "SELECT * FROM product,subcategory,category,users WHERE product.category=category.category_id AND product.subcategory=subcategory.sub_category_id AND product.brand=users.user_id and product.brand = $brand" ;
                         $result = $conn->query($query); 
                         $count=1;
                         if($result->num_rows > 0){ 
@@ -246,8 +241,7 @@
                         <td><?=$row["product_desc"]?></td>      
                         <td><?=$row["category_name"]?></td>
                         <td><?=$row["sub_category"]?></td> 
-                        <td><?=$row["price"]?></td>  
-                        <td><?=$row["quantity"]?></td>     
+                            
                         <td>
                           <div class="d-flex align-items-center">
                           <a href="view-product.php?id=<?php echo $row['prod_id']?>"style="color:white;text-decoration:none;">  
@@ -259,18 +253,7 @@
                               Edit
                               <i class="typcn typcn-edit btn-icon-append"></i> </a>                         
                             </button>
-                            <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                            <?php
-                              if($row['status']==1){
-                                echo "<span class='badge_active'><a href='?type=status&operation=deactive&id=".$row['prod_id']."' style='color:white;text-decoration:none;'>Active</a></span>";
-                              } 
-                              else{
-                                echo "<span class='badge_deactive'><a href='?type=status&operation=active&id=".$row['prod_id']."' style='color:white;text-decoration:none;'>Inactive</a></span>";
-                              }
-
-                            ?>
-                              <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
-                            </button>
+                            
                           </div>
 
                         </td>                       
@@ -280,6 +263,8 @@
                              $count=$count+1;
                             }
                         }
+                      }
+                    }
                         ?>
                     </tbody>
                     
@@ -339,7 +324,21 @@ $(document).ready(function(){
     });
     
 });
-
+$(document).ready(function(){
+    $('#stock').on('click', function(){
+        
+        
+            $.ajax({
+                type:'POST',
+                url:'manage-stock.php',
+                success:function(html){
+                    $('#stockform').html(html); 
+                }
+            }); 
+        
+    });
+    
+});
 
 
        
@@ -389,16 +388,16 @@ window.onload = function () {
        
         $ProductName = $_POST['p_name'];
         $desc= $_POST['p_desc'];
-        $price = $_POST['p_price'];
+        
         $category = $_POST['category'];
         $sub_category = $_POST['subcategory'];
         $cut = $_POST['cut'];
-        $brand = $_POST['brand'];
+        
         $bodytype = $_POST['bodytype'];
         $fade = $_POST['fade'];
         $fit = $_POST['fit'];
         $feature = $_POST['feature'];
-        $qty = $_POST['qty'];
+        
         
         $material = $_POST['material'];
         $wear = $_POST['wear'];
@@ -434,8 +433,13 @@ window.onload = function () {
         $finalImage3=$target_dir.$name3;
 
         move_uploaded_file($temp3,$finalImage3);
-
-        $insert = mysqli_query($conn,"INSERT INTO product(product_name, product_desc, cut, brand, body_type, fade, feature, fit, material, pattern, texture, wear, usergroup, image1, image2, image3, category, subcategory, price, quantity) VALUES ('$ProductName','$desc',$cut, $brand, $bodytype, $fade, $feature, $fit, $material, $pattern, $texture, $wear, $usergroup,'$finalImage1', '$finalImage2','$finalImage3', $category, $sub_category, $price, $qty)");
+        $brand1 = $_SESSION['username'];
+        $sql = "SELECT user_id FROM users where username = '$brand1'";
+        $result = $conn-> query($sql);
+        if ($result-> num_rows > 0){
+        while($row = $result-> fetch_assoc()){
+          $brand = $row['user_id'];
+        $insert = mysqli_query($conn,"INSERT INTO product(product_name, product_desc, cut, brand, body_type, fade, feature, fit, material, pattern, texture, wear, usergroup, image1, image2, image3, category, subcategory) VALUES ('$ProductName','$desc',$cut, $brand, $bodytype, $fade, $feature, $fit, $material, $pattern, $texture, $wear, $usergroup,'$finalImage1', '$finalImage2','$finalImage3', $category, $sub_category)");
  
         if($insert)
         {
@@ -447,145 +451,16 @@ window.onload = function () {
         }
      
     }
+  }
+}
     if(isset($_POST['update']))
     {
        
         $prod_id=$_POST['prod_id'];
         $ProductName = $_POST['p_name'];
         $desc= $_POST['p_desc'];
-        $price = $_POST['p_price'];
-        $category = $_POST['category'];
-        $sql = "SELECT * FROM category where category_name = '$category'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $category = $_POST['category_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET category='$category' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $sub_category = $_POST['subcategory'];
-        $sql = "SELECT * FROM subcategory where sub_category = '$sub_category'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $sub_category = $_POST['sub_category_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET subcategory='$sub_category' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $cut = $_POST['cut'];
-        $sql = "SELECT * FROM cut where cut = '$cut'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $cut = $_POST['cut_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET cut='$cut' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $brand = $_POST['brand'];
-        $sql = "SELECT * FROM users where username = '$brand'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['user_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET brand='$brand' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $bodytype = $_POST['bodytype'];
-        $sql = "SELECT * FROM body_type where body_type_name = '$bodytype'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['type_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET body_type ='$bodytype' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $fade = $_POST['fade'];
-        $sql = "SELECT * FROM fade where fade_name = '$fade'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $fade = $_POST['fade_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET fade ='$fade' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $fit = $_POST['fit'];
-        $sql = "SELECT * FROM fit where fit_name = '$fit'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['fit_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET fit ='$fit' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $feature = $_POST['feature'];
-        $sql = "SELECT * FROM features where feature_name = '$feature'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['entry_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET feature ='$feature' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $qty = $_POST['qty'];
         
-        $material = $_POST['material'];
-        $sql = "SELECT * FROM material where material_name = '$material'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['material_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET material ='$material' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $wear = $_POST['wear'];
-        $sql = "SELECT * FROM wear where wear_name = '$wear'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['wear_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET wear ='$wear' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $usergroup = $_POST['usergroup'];
-        $sql = "SELECT * FROM usergroup where group_name = '$usergroup'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $usergroup = $_POST['group_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET usergroup ='$usergroup' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $pattern = $_POST['pattern'];
-        $sql = "SELECT * FROM pattern where pattern_name = '$pattern'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['pattern_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET pattern ='$pattern' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
-        $texture = $_POST['texture'];
-        $sql = "SELECT * FROM texture where texture_name = '$texture'";
-        $result = $conn-> query($sql);
-        if ($result-> num_rows > 0){
-        while($row = $result-> fetch_assoc()){
-          $brand = $_POST['entry_id'];
-          $cat = mysqli_query($conn,"UPDATE product SET texture ='$texture' WHERE prod_id=$prod_id");
-          if($cat){}
-        }
-        }
+        
         $name1 = $_FILES['file1']['name'];
         $temp1 = $_FILES['file1']['tmp_name'];
     
@@ -615,7 +490,7 @@ window.onload = function () {
         $finalImage3=$target_dir.$name3;
 
         move_uploaded_file($temp3,$finalImage3);    
-        $updateCat = mysqli_query($conn,"UPDATE product SET product_name='$ProductName', product_desc='$desc', image1='$finalImage1', image2='$finalImage2', image3='$finalImage3', price='$price', quantity='$qty' WHERE prod_id=$prod_id");
+        $updateCat = mysqli_query($conn,"UPDATE product SET product_name='$ProductName', product_desc='$desc', image1='$finalImage1', image2='$finalImage2', image3='$finalImage3' WHERE prod_id=$prod_id");
  
          if($updateCat)
          {
@@ -632,7 +507,7 @@ window.onload = function () {
     
       if($type=='status'){
         $operation=($_GET['operation']);
-        $id=($_GET['id']);
+        $id=$_GET['id'];
     
         if($operation=='active'){
           $status='1';
@@ -640,7 +515,7 @@ window.onload = function () {
         else{
           $status='0';
         }
-        $update_status="UPDATE product set status='$status'where prod_id='$id'";
+        $update_status="UPDATE product set status='$status' where prod_id= $id";
         mysqli_query($conn,$update_status);
     
       }

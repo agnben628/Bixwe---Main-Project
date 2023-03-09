@@ -6,91 +6,29 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <title>Seller</title>
   <!-- base:css -->
   <link rel="stylesheet" href="vendors/typicons/typicons.css">
   <link rel="stylesheet" href="vendors/css/vendor.bundle.base.css">
-  <script type="text/javascript" src="https://www.google.com/jsapi"></script>
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
   <!-- endinject -->
   <!-- plugin css for this page -->
   <!-- End plugin css for this page -->
   <!-- inject:css -->
   <link rel="stylesheet" href="css/vertical-layout-light/style.css">
   <!-- endinject -->
+  
   <link rel="shortcut icon" href="images/favicon.png" />
-  <script type="text/javascript">
- google.load("visualization", "1", {packages:["corechart"]});
- google.setOnLoadCallback(drawChart);
- function drawChart() {
- var data = google.visualization.arrayToDataTable([
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" 
+  integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" 
+  crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
- ['Product','Number'],
- <?php 
-      $query = "SELECT count(order_items.product_id) AS number, product.product_name FROM product INNER JOIN order_items WHERE product.prod_id=order_items.product_id GROUP BY order_items.product_id";
-
-       $exec = mysqli_query($conn,$query);
-       while($row = mysqli_fetch_array($exec)){
-
-       echo "['".$row['product_name']."',".$row['number']."],";
-       }
-       ?> 
- 
- ]);
-
- var options = {
- title: 'Analysis of Product Sale',
-  pieHole: 0,
-          pieSliceTextStyle: {
-            color: 'black',
-          },
-          legend: 'none'
- };
- var chart = new google.visualization.PieChart(document.getElementById("columnchart12"));
- chart.draw(data,options);
- }
   
- 
-    </script>
-    <script type="text/javascript">
- google.load("visualization", "1", {packages:["corechart"]});
- google.setOnLoadCallback(drawChart);
- function drawChart() {
- var data = google.visualization.arrayToDataTable([
-
- ['Product','Number'],
- <?php 
-      $query = "SELECT count(wishlist.product_id) AS number, product.product_name FROM product INNER JOIN wishlist WHERE product.prod_id=wishlist.product_id GROUP BY wishlist.product_id";
-
-       $exec = mysqli_query($conn,$query);
-       while($row = mysqli_fetch_array($exec)){
-
-       echo "['".$row['product_name']."',".$row['number']."],";
-       }
-       ?> 
- 
- ]);
-
- var options = {
- title: 'Analysis of Wishlisted Products',
-  pieHole: 0,
-          pieSliceTextStyle: {
-            color: 'black',
-          },
-          legend: 'none'
- };
- var chart = new google.visualization.PieChart(document.getElementById("columnchart13"));
- chart.draw(data,options);
- }
   
- 
-    </script>
 </head>
 <body>
-  
+
   <div class="container-scroller">
     <!-- partial:partials/_navbar.html -->
     <nav class="navbar col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
@@ -118,7 +56,7 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-date dropdown">
             <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
-              <h6 class="date mb-0"><?php echo "Today is " . date("Y / m / d") . "<br>";?></h6>
+              <h6 class="date mb-0"><?php echo "Today is " . date("d / m / Y") . "<br>";?></h6>
               <i class="typcn typcn-calendar"></i>
             </a>
           </li>
@@ -130,18 +68,30 @@
             </a>
             <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
               <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              
-              <a class="dropdown-item preview-item">
+              <?php
+                            
+                    $sql="SELECT * from notification, notif_type where notification.receiver=15 and notification.notif_id=notif_type.notif_id and notification.read_status=0";
+                    $result=$conn-> query($sql);
+                    $count=1;
+                    if ($result-> num_rows > 0){
+                    while ($row=$result-> fetch_assoc()) {
+                      $entry=$row['entry_id'];
+                  ?>
+              <a href="manage-stock.php?id=<?php echo $entry;?>" class="dropdown-item preview-item">
                 <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="typcn typcn-user mx-0"></i> 
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New Seller Registration</h6>
                   
                 </div>
+                  
+                  <div class="preview-item-content">
+                  <h6 class="preview-subject font-weight-normal"><?php echo $row['notification'];?></h6>
+                  
+
+                  </div>
               </a>
+              <?php
+              }
+            }
+            ?>
             </div>
           </li>
         </ul>
@@ -151,29 +101,7 @@
       </div>
     </nav>
     <!-- partial -->
-    <nav class="navbar-breadcrumb col-xl-12 col-12 d-flex flex-row p-0">
-      
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item ml-0">
-            <h4 class="mb-0">Dashboard</h4>
-          </li>
-          
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-search d-none d-md-block mr-0">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search..." aria-label="search" aria-describedby="search">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
-                  <i class="typcn typcn-zoom"></i>
-                </span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+     
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
@@ -243,6 +171,9 @@
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="seller-product-view.php">View</a></li>
+                <li class="nav-item"><a class="nav-link" href="analysis.php"> Product Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="salesreport.php">Sales Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="sentiment.php">Feedback</a></li>
               </ul>
             </div>
           </li>
@@ -271,8 +202,14 @@
             <div class="col-xl-6 grid-margin stretch-card flex-column">
                 
               <div class="row">
-                
-                
+               <?php 
+              $brand1 = $_SESSION['username'];
+        $sql = "SELECT user_id FROM users where username = '$brand1'";
+        $result = $conn-> query($sql);
+        if ($result-> num_rows > 0){
+        while($row = $result-> fetch_assoc()){
+          $brand = $row['user_id'];
+          ?>
               </div>
               <div class="row h-100">
                 <div class="col-md-6 stretch-card grid-margin grid-margin-md-0">
@@ -282,7 +219,7 @@
                       <div class="d-flex justify-content-between align-items-center mb-2">
                         <h4 class="mb-"><?php
                        
-                       $sql="SELECT * from orders";
+                       $sql="SELECT * from orders,order_items,users where orders.order_id=order_items.order_id and order_items.brand=users.user_id and order_items.brand = $brand";
                        $result=$conn->query($sql);
                        $count=0;
                        if ($result-> num_rows > 0){
@@ -307,7 +244,7 @@
                           <p class="text-muted">Products</p>
                           <h4><?php
                        
-                       $sql="SELECT * from product";
+                       $sql="SELECT * from product, users where product.brand=users.user_id and product.brand = $brand";
                        $result=$conn->query($sql);
                        $count=0;
                        if ($result-> num_rows > 0){
@@ -348,14 +285,13 @@
                         <th>Product Description</th>
                         <th>Category</th>
                         <th>Sub Category	</th>
-                        <th>Price</th>
-                        <th>Quantity</th>
-                        <th colspan=3>Action</th>
+                        
+                        <th >Action</th>
                       </tr>
                     </thead>
                     <tbody>
                         <?php
-                        $query = "SELECT * FROM product,subcategory,category WHERE product.category=category.category_id AND product.subcategory=subcategory.sub_category_id" ;
+                        $query = "SELECT * FROM product,subcategory,category,users WHERE product.category=category.category_id AND product.subcategory=subcategory.sub_category_id AND product.brand=users.user_id and product.brand = $brand" ;
                         $result = $conn->query($query); 
                         $count=1;
                         if($result->num_rows > 0){ 
@@ -370,40 +306,40 @@
                         <td><?=$row["product_desc"]?></td>      
                         <td><?=$row["category_name"]?></td>
                         <td><?=$row["sub_category"]?></td> 
-                        <td><?=$row["price"]?></td>  
-                        <td><?=$row["quantity"]?></td>     
+                             
                         <td>
                           <div class="d-flex align-items-center">
-                            <button type="button" id ="view" value="'<?=$row["prod_id"]?>'"class="btn btn-success btn-sm btn-icon-text mr-3">
+                          <a href="view-product.php?id=<?php echo $row['prod_id']?>"style="color:white;text-decoration:none;">  
+                          <button type="button" id ="view" value="'<?=$row["prod_id"]?>'" data-toggle="button" aria-pressed="false"class="btn btn-success btn-sm btn-icon-text mr-3">
                               View More                           
-                            </button>
-                            <button type="button" class="btn btn-success btn-sm btn-icon-text mr-3">
-                              Edit
-                              <i class="typcn typcn-edit btn-icon-append"></i>                          
-                            </button>
-                            <button type="button" class="btn btn-danger btn-sm btn-icon-text">
-                              Delete
-                              <i class="typcn typcn-delete-outline btn-icon-append"></i>                          
-                            </button>
-                          </div>
+                            </button></a>
+                            
+                                                      </div>
 
-                        </td>                       
+                        </td>                           
                         
                       </tr>
                       <?php
                              $count=$count+1;
                             }
                         }
+                      }
+                    }
                         ?>
                     </tbody>
                   </table>
                 </div>
-                <div class ="card" id="productdetails">
-                      </div>
+                
               </div>
+              
             </div>
           </div>
-
+          
+          <div class="container-fluid d-flex p-2">
+ <div id="columnchart12" style="width: 80%; height: 400px;"></div>
+ 
+ <div id="columnchart13" style="width: 80%; height: 400px;"></div>
+ </div>
         </div>
         <!-- content-wrapper ends -->
         <!-- partial:partials/_footer.html -->
@@ -456,12 +392,76 @@ $(document).ready(function(){
 });
 
 </script>
-<div class="container-fluid d-flex p-2">
- <div id="columnchart12" style="width: 80%; height: 400px;"></div>
+
+
+
+
+<script type="text/javascript">
+ google.load("visualization", "1", {packages:["corechart"]});
+ google.setOnLoadCallback(drawChart);
+ function drawChart() {
+ var data = google.visualization.arrayToDataTable([
+
+ ['Product','Number'],
+ <?php 
+      $user=$_SESSION['username'];
+      $query = "SELECT count(order_items.product_id) AS number, product.product_name FROM product, order_items WHERE product.prod_id=order_items.product_id and order_items.brand=product.brand and order_items.brand=(select user_id from users where username='$user') GROUP BY order_items.product_id";
+      $exec = mysqli_query($conn,$query);
+      while($row = mysqli_fetch_array($exec)){
+       echo "['".$row['product_name']."',".$row['number']."],";
+       }
+       ?> 
  
- <div id="columnchart13" style="width: 80%; height: 400px;"></div>
- </div>
-</body>
+ ]);
+
+ var options = {
+ title: 'Analysis of Product Sale',
+  pieHole: 0,
+          pieSliceTextStyle: {
+            color: 'black',
+          },
+          legend: 'none'
+ };
+ var chart = new google.visualization.PieChart(document.getElementById("columnchart12"));
+ chart.draw(data,options);
+ }
+  
+ </script>
+<script type="text/javascript">
+    
+ google.load("visualization", "1", {packages:["corechart"]});
+ google.setOnLoadCallback(drawChart);
+ function drawChart() {
+ var data = google.visualization.arrayToDataTable([
+
+ ['Product','Number'],
+ <?php 
+      $user=$_SESSION['username'];
+      $query = "SELECT count(wishlist.product_id) AS number product.product_name FROM product INNER JOIN wishlist WHERE product.prod_id=wishlist.product_id and wishlist.brand=product.brand and wishlist.brand=(select user_id from users where username='$user') GROUP BY wishlist.product_id";
+
+       $exec = mysqli_query($conn,$query);
+       while($row = mysqli_fetch_array($exec)){
+
+       echo "['".$row['product_name']."',".$row['number']."],";
+       }
+       ?> 
+ 
+ ]);
+
+ var options = {
+ title: 'Analysis of Wishlisted Products',
+  pieHole: 0,
+          pieSliceTextStyle: {
+            color: 'black',
+          },
+          legend: 'none'
+ };
+ var chart = new google.visualization.PieChart(document.getElementById("columnchart13"));
+ chart.draw(data,options);
+ }
+  
+ 
+    </script>
+    </body>
 
 </html>
-

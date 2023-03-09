@@ -50,32 +50,12 @@
         <ul class="navbar-nav navbar-nav-right">
           <li class="nav-item nav-date dropdown">
             <a class="nav-link d-flex justify-content-center align-items-center" href="javascript:;">
-              <h6 class="date mb-0"><?php echo "Today is " . date("Y / m / d") . "<br>";?></h6>
+              <h6 class="date mb-0"><?php echo "Today is " . date("d / m / Y") . "<br>";?></h6>
               <i class="typcn typcn-calendar"></i>
             </a>
           </li>
           
-          <li class="nav-item dropdown mr-0">
-            <a class="nav-link count-indicator dropdown-toggle d-flex align-items-center justify-content-center" id="notificationDropdown" href="#" data-toggle="dropdown">
-              <i class="typcn typcn-bell mx-0"></i>
-              <span class="count"></span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-              <p class="mb-0 font-weight-normal float-left dropdown-header">Notifications</p>
-              
-              <a class="dropdown-item preview-item">
-                <div class="preview-thumbnail">
-                  <div class="preview-icon bg-info">
-                    <i class="typcn typcn-user mx-0"></i> 
-                  </div>
-                </div>
-                <div class="preview-item-content">
-                  <h6 class="preview-subject font-weight-normal">New Seller Registration</h6>
-                  
-                </div>
-              </a>
-            </div>
-          </li>
+          
         </ul>
         <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
           <span class="typcn typcn-th-menu"></span>
@@ -83,29 +63,7 @@
       </div>
     </nav>
     <!-- partial -->
-    <nav class="navbar-breadcrumb col-xl-12 col-12 d-flex flex-row p-0">
-      
-      <div class="navbar-menu-wrapper d-flex align-items-center justify-content-end">
-        <ul class="navbar-nav mr-lg-2">
-          <li class="nav-item ml-0">
-            <h4 class="mb-0">Dashboard</h4>
-          </li>
-          
-        </ul>
-        <ul class="navbar-nav navbar-nav-right">
-          <li class="nav-item nav-search d-none d-md-block mr-0">
-            <div class="input-group">
-              <input type="text" class="form-control" placeholder="Search..." aria-label="search" aria-describedby="search">
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="search">
-                  <i class="typcn typcn-zoom"></i>
-                </span>
-              </div>
-            </div>
-          </li>
-        </ul>
-      </div>
-    </nav>
+     
     <div class="container-fluid page-body-wrapper">
       <!-- partial:partials/_settings-panel.html -->
       <div class="theme-setting-wrapper">
@@ -175,6 +133,9 @@
             <div class="collapse" id="form-elements">
               <ul class="nav flex-column sub-menu">
                 <li class="nav-item"><a class="nav-link" href="seller-product-view.php">View</a></li>
+                <li class="nav-item"><a class="nav-link" href="analysis.php"> Product Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="salesreport.php">Sales Analysis</a></li>
+                <li class="nav-item"><a class="nav-link" href="sentiment.php">Feedback</a></li>
               </ul>
             </div>
           </li>
@@ -195,6 +156,13 @@
           
         </ul>
       </nav>
+      <?php                  
+                        $brand1 = $_SESSION['username'];
+                        $sql = "SELECT user_id FROM users where username = '$brand1'";
+                        $result1 = $conn-> query($sql);
+                        if ($result1-> num_rows > 0){
+                        while($row1 = $result1-> fetch_assoc()){
+                          $brand = $row1['user_id']; ?> 
       <!-- partial -->
       <div class="main-panel">
         <div class="content-wrapper">        
@@ -218,7 +186,7 @@
                     <tbody>
                     <?php
                             
-                            $sql="SELECT * from orders";
+                            $sql="SELECT * from order_items, orders, users where orders.order_id= order_items.order_id and order_items.brand=users.user_id and order_items.brand = $brand";
                             $result=$conn-> query($sql);
                             $count=1;
                             if ($result-> num_rows > 0){
@@ -241,14 +209,14 @@
                             
                             <button type="button" class="btn btn-danger btn-sm btn-icon-text">
                             <?php
-                              if($row['status']==0){
-                                echo "<span class='badge_active'><a href='?type=status&operation=ship&id=".$row['order_id']."' style='color:white;text-decoration:none;'>Processing</a></span>";
+                              if($row['order_status']==0){
+                                echo "<span class='badge_active'><a href='?type=status&operation=ship&id=".$row['id']."' style='color:white;text-decoration:none;'>Processing</a></span>";
                               } 
-                              else if($row['status']==1){
-                                echo "<span class='badge_deactive'><a href='?type=status&operation=deliver&id=".$row['order_id']."' style='color:white;text-decoration:none;'>Shipped</a></span>";
+                              else if($row['order_status']==1){
+                                echo "<span class='badge_deactive'><a href='?type=status&operation=deliver&id=".$row['id']."' style='color:white;text-decoration:none;'>Shipped</a></span>";
                               }
-                              else if($row['status']==2){
-                                echo "<span class='badge_deactive'><a href='?type=status&operation=deliver&id=".$row['order_id']."' style='color:white;text-decoration:none;'>Delivered</a></span>";
+                              else if($row['order_status']==2){
+                                echo "<span class='badge_deactive'><a href='?type=status&operation=deliver&id=".$row['id']."' style='color:white;text-decoration:none;'>Delivered</a></span>";
                               }
 
                             ?>
@@ -263,6 +231,8 @@
                              $count=$count+1;
                             }
                         }
+                      }
+                    }
                         ?>
                                        </tbody>
                   </table>
@@ -318,17 +288,11 @@ if(isset($_GET['type']) && $_GET['type']!=''){
     else{
       $status='0';
     }
-    $update_status="UPDATE orders set status='$status'where order_id='$id'";
+    $update_status="UPDATE order_items set order_status='$status'where id='$id'";
     mysqli_query($conn,$update_status);
 
   }
-  if($type=='delete'){
-    $id=($_GET['id']);
-
-    $delete_sql="DELETE FROM order where order_id='$id'";
-    mysqli_query($conn,$delete_sql);
-
-  }
+  
 }   
 ?>  
 </body>

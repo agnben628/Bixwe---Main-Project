@@ -24,20 +24,37 @@
                     <div class="row mt-4 tm-edit-product-row">
                         <div class="d-flex p-2">
                             <form enctype='multipart/form-data' action="./seller-product-view.php" method="POST" class="tm-edit-product-form">
-                                <div class="input-group mb-3 d-flex">
-                                    <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
-                                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category" id="category">
-                                        <option disabled selected>Select Category</option>
+                            <div class="input-group mb-3">
+                                    <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
+                                    <input id="p_name" name="p_name" type="text"class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required pattern="^\S[a-zA-Z\s]*$">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
+                                    <textarea id="p_desc" name="p_desc" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3" required ></textarea>
+                                </div>
+                                
+                                
+                            <div class="input-group mb-3">
+                                    <label for="usergroup" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">User Group</label>
+                                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="usergroup" id="usergroup">
+                                        <option disabled selected>Select Usergroup</option>
                                             <?php
-                                            $sql="SELECT * from category";
+                                            $sql="SELECT * from usergroup where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
                                             while($row = $result-> fetch_assoc()){
-                                            echo "<option value='".$row['category_id']."'>".$row['category_name'] ."</option>";
+                                            echo "<option value='".$row['group_id']."'>".$row['group_name'] ."</option>";
                                             }
                                             }
                                             ?>
+                                    </select>
+                                </div>    
+                            <div class="input-group mb-3 d-flex">
+                                    <label for="category" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Category</label>
+                                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="category" id="category">
+                                        <option disabled selected>Select Category</option>
+                                            
                                     </select>
                                 </div>
                                 <div class="input-group mb-3 d-flex">
@@ -47,28 +64,13 @@
                                         
                                     </select>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <label for="name" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Name</label>
-                                    <input id="p_name" name="p_name" type="text"class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" required pattern="^\S[a-zA-Z\s]*$">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <label for="description" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 mb-2">Description</label>
-                                    <textarea id="p_desc" name="p_desc" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" rows="3" required pattern="^\S[a-zA-Z\s]*$"></textarea>
-                                </div>
-                                <div class="input-group mb-3">
-                                    <label for="price" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label" >Price</label>
-                                    <input id="p_price" name="p_price" type="number" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" min="1" required pattern="^\-[0-9]+">
-                                </div>
-                                <div class="input-group mb-3">
-                                    <label for="qty" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Quantity</label>
-                                    <input id="qty" name="qty" type="number" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7" min="1" required pattern="^[0-9]+">
-                                </div>
+                                
                                 <div class="input-group mb-3">
                                     <label for="cut" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Cut</label>
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="cut" id="cut">
                                         <option disabled selected>Select Cut</option>
                                             <?php
-                                            $sql="SELECT * from cut";
+                                            $sql="SELECT * from cut where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -79,28 +81,13 @@
                                             ?>
                                     </select>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <label for="brand" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Brand</label>
-                                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="brand" id="brand">
-                                        <option disabled selected>Select Brand</option>
-                                            <?php
-                                            $sql="SELECT * from users where role='Seller'";
-                                            $result = $conn-> query($sql);
-
-                                            if ($result-> num_rows > 0){
-                                            while($row = $result-> fetch_assoc()){
-                                            echo "<option value='".$row['user_id']."'>".$row['username'] ."</option>";
-                                            }
-                                            }
-                                            ?>
-                                    </select>
-                                </div>
+                                
                                 <div class="input-group mb-3">
                                     <label for="bodytype" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Body Type</label>
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="bodytype" id="bodytype">
                                         <option disabled selected>Select Body Type</option>
                                             <?php
-                                            $sql="SELECT * from body_type";
+                                            $sql="SELECT * from body_type where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -116,7 +103,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="fade" id="fade">
                                         <option disabled selected>Select Fade</option>
                                             <?php
-                                            $sql="SELECT * from fade";
+                                            $sql="SELECT * from fade where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -132,7 +119,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="fit" id="fit">
                                         <option disabled selected>Select Fit</option>
                                             <?php
-                                            $sql="SELECT * from fit";
+                                            $sql="SELECT * from fit where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -148,7 +135,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="feature" id="feature" multiple="multiple">
                                         <option disabled selected>Select Feature</option>
                                             <?php
-                                            $sql="SELECT * from features";
+                                            $sql="SELECT * from features where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -164,7 +151,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="material" id="material">
                                         <option disabled selected>Select Material</option>
                                             <?php
-                                            $sql="SELECT * from material";
+                                            $sql="SELECT * from material where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -180,7 +167,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="pattern" id="pattern">
                                         <option disabled selected>Select Pattern</option>
                                             <?php
-                                            $sql="SELECT * from pattern";
+                                            $sql="SELECT * from pattern where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -196,7 +183,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="texture" id="texture">
                                         <option disabled selected>Select Texture</option>
                                             <?php
-                                            $sql="SELECT * from texture";
+                                            $sql="SELECT * from texture where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -212,7 +199,7 @@
                                     <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="wear" id="wear">
                                         <option disabled selected>Select Wear</option>
                                             <?php
-                                            $sql="SELECT * from wear";
+                                            $sql="SELECT * from wear where status=1";
                                             $result = $conn-> query($sql);
 
                                             if ($result-> num_rows > 0){
@@ -223,22 +210,7 @@
                                             ?>
                                     </select>
                                 </div>
-                                <div class="input-group mb-3">
-                                    <label for="usergroup" class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">User Group</label>
-                                    <select class="custom-select col-xl-9 col-lg-8 col-md-8 col-sm-7" name="usergroup" id="usergroup">
-                                        <option disabled selected>Select Usergroup</option>
-                                            <?php
-                                            $sql="SELECT * from usergroup";
-                                            $result = $conn-> query($sql);
-
-                                            if ($result-> num_rows > 0){
-                                            while($row = $result-> fetch_assoc()){
-                                            echo "<option value='".$row['group_id']."'>".$row['group_name'] ."</option>";
-                                            }
-                                            }
-                                            ?>
-                                    </select>
-                                </div>
+                                
                                 <div class="input-group mb-3">
                                     <label for="file1"class="col-xl-4 col-lg-4 col-md-4 col-sm-5 col-form-label">Image 1</label>
                                     <input type="file" class="form-control validate col-xl-9 col-lg-8 col-md-8 col-sm-7-file" id="file1" name="file1">
@@ -293,7 +265,24 @@
             });
             
         });
-
+$(document).ready(function(){
+    $('#usergroup').on('change', function(){
+        var grpID = $(this).val();
+        if(grpID){
+            $.ajax({  
+                type:'POST',
+                url:'dispcat2.php',
+                data:'grpid='+grpID,
+                success:function(html){
+                    $('#category').html(html); 
+                }
+            }); 
+        }else{
+            $('#category').html('<option value="">Select usergroup first</option>');
+        }
+    });
+    
+});
     </script>
     
 </body>
