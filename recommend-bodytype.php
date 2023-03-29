@@ -63,17 +63,20 @@
         {
         $array = explode(",", $cardigans);
         $cardigan1 = $array[0];
-        // $cardigan2 = $array[1];
+        $cardigan2 = $array[1];
+        $cardigan3 = $array[2];
+        $cardigan4 = $array[3];
+        $cardigan5 = $array[4];
         }
         $coats = $res['coats'];
         if($coats != "None")
         {
         $array = explode(",", $coats);
         $coat1 = $array[0];
-        // $coat2 = $array[1];
-        // $coat3 = $array[2];
-        // $coat4 = $array[3];
-        // $coat5 = $array[4];
+        $coat2 = $array[1];
+        $coat3 = $array[2];
+        $coat4 = $array[3];
+        $coat5 = $array[4];
         }
         $trousers = $res['trousers'];
         if($trousers != "None")
@@ -102,8 +105,8 @@
         $skirts1 = $array[0];
         $skirts2 = $array[1];
         $skirts3 = $array[2];
-        // $skirts4 = $array[3];
-        // $skirts5 = $array[4];
+        $skirts4 = $array[3];
+        $skirts5 = $array[4];
         }
         $dress = $res['dress'];
         if($dress != "None")
@@ -112,8 +115,8 @@
         $dress1 = $array[0];
         $dress2 = $array[1];
         $dress3 = $array[2];
-        // $dress4 = $array[3];
-        // $dress5 = $array[4];
+        $dress4 = $array[3];
+        $dress5 = $array[4];
         }
         $blazers = $res['blazers'];
         if($blazers != "None")
@@ -349,8 +352,8 @@ https://templatemo.com/tm-571-hexashop
             <div class="row">
                 <div class="col-lg-6">
                     <div class="section-heading">
-                        <h2>Related to your Body Type <?php echo "\n".$body_type;?></h2>
-                        <span>Check out what suites you based on your body type.</span>
+                        <h2>Related to your Body Type <?php echo "\n\n".$body_type;?></h2>
+                        
                     </div>
                 </div>
             </div>
@@ -379,7 +382,7 @@ if($tops != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Tops%' and ((r.o_desc LIKE '%top1%') OR (r.o_desc LIKE '%top2%' )OR (r.o_desc LIKE '%top3%') OR (r.o_desc LIKE '%top4%') OR (r.o_desc LIKE '%top5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Tops%') and ((r.o_desc LIKE '%$top1%') OR (r.o_desc LIKE '%$top2%' ) OR (r.o_desc LIKE '%$top3%') OR (r.o_desc LIKE '%$top4%') OR (r.o_desc LIKE '%$top5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -390,7 +393,10 @@ if($tops != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -435,7 +441,7 @@ if($jackets != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Jackets%' and ((r.o_desc LIKE '%jacket1%') OR (r.o_desc LIKE '%jacket2%') OR (r.o_desc LIKE '%jacket3%') OR (r.o_desc LIKE '%jacket4%') OR (r.o_desc LIKE '%jacket5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Jackets%') and ((r.o_desc LIKE '%$jacket1%') OR (r.o_desc LIKE '%$jacket2%') OR (r.o_desc LIKE '%$jacket3%') OR (r.o_desc LIKE '%$jacket4%') OR (r.o_desc LIKE '%$jacket5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -446,7 +452,10 @@ if($jackets != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -490,7 +499,7 @@ if($cardigans != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Cardigans%' and (r.o_desc LIKE '%cardigan1%')";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Cardigans%') and ((r.o_desc LIKE '%$cardigan1%') OR (r.o_desc LIKE '%$cardigan2%') OR (r.o_desc LIKE '%$cardigan3%') OR (r.o_desc LIKE '%$cardigan4%') OR (r.o_desc LIKE '%$cardigan5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -501,7 +510,10 @@ if($cardigans != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -545,7 +557,7 @@ if($coats != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Coats%' and (r.o_desc LIKE '%coat1%')";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Coats%') and ((r.o_desc LIKE '%$coat1%') OR (r.o_desc LIKE '%$coat2%') OR (r.o_desc LIKE '%$coat3%') OR (r.o_desc LIKE '%$coat4%') OR (r.o_desc LIKE '%$coat5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -556,7 +568,10 @@ if($coats != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -600,7 +615,7 @@ if($trousers != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Trousers%' and ((r.o_desc LIKE '%trousers1%') OR (r.o_desc LIKE '%trousers2%') OR (r.o_desc LIKE '%trousers3%') OR (r.o_desc LIKE '%trousers4%') OR (r.o_desc LIKE '%trousers5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Trousers%') and ((r.o_desc LIKE '%$trousers1%') OR (r.o_desc LIKE '%$trousers2%') OR (r.o_desc LIKE '%$trousers3%') OR (r.o_desc LIKE '%$trousers4%') OR (r.o_desc LIKE '%$trousers5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -611,7 +626,10 @@ if($trousers != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -655,7 +673,7 @@ if($jeans != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Jeans%' and ((r.o_desc LIKE '%jeans1%') OR (r.o_desc LIKE '%jeans2%') OR (r.o_desc LIKE '%jeans3%') OR (r.o_desc LIKE '%jeans4%') OR (r.o_desc LIKE '%jeans5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Jeans%') and ((r.o_desc LIKE '%$jeans1%') OR (r.o_desc LIKE '%$jeans2%') OR (r.o_desc LIKE '%$jeans3%') OR (r.o_desc LIKE '%$jeans4%') OR (r.o_desc LIKE '%$jeans5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -666,7 +684,10 @@ if($jeans != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -711,7 +732,7 @@ if($skirts != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Skirts%' and ((r.o_desc LIKE '%skirts1%') OR (r.o_desc LIKE '%skirts2%') OR (r.o_desc LIKE '%skirts3%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Skirts%') and ((r.o_desc LIKE '%$skirts1%') OR (r.o_desc LIKE '%$skirts2%') OR (r.o_desc LIKE '%$skirts3%') OR (r.o_desc LIKE '%$skirts4%') OR (r.o_desc LIKE '%$skirts5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -722,7 +743,10 @@ if($skirts != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -766,7 +790,7 @@ if($dress != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Dress%' and ((r.o_desc LIKE '%dress1%') OR (r.o_desc LIKE '%dress2%') OR (r.o_desc LIKE '%dress3%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Dress%') and ((r.o_desc LIKE '%$dress1%') OR (r.o_desc LIKE '%$dress2%') OR (r.o_desc LIKE '%$dress3%') OR (r.o_desc LIKE '%$dress4%') OR (r.o_desc LIKE '%$dress5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -777,7 +801,10 @@ if($dress != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -821,7 +848,7 @@ if($blazers != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Blazers%' and ((r.o_desc LIKE '%blazers1%') OR (r.o_desc LIKE '%blazers2%') OR (r.o_desc LIKE '%blazers3%') OR (r.o_desc LIKE '%blazers4%') OR (r.o_desc LIKE '%blazers5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Blazers%') and ((r.o_desc LIKE '%$blazers1%') OR (r.o_desc LIKE '%$blazers2%') OR (r.o_desc LIKE '%$blazers3%') OR (r.o_desc LIKE '%$blazers4%') OR (r.o_desc LIKE '%$blazers5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -832,7 +859,10 @@ if($blazers != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -876,7 +906,7 @@ if($tshirts != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Tshirts%' and ((r.o_desc LIKE '%tshirts1%') OR (r.o_desc LIKE '%tshirts2%') OR (r.o_desc LIKE '%tshirts3%') OR (r.o_desc LIKE '%tshirts4%') OR (r.o_desc LIKE '%tshirts5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Tshirts%') and ((r.o_desc LIKE '%$tshirts1%') OR (r.o_desc LIKE '%$tshirts2%') OR (r.o_desc LIKE '%$tshirts3%') OR (r.o_desc LIKE '%$tshirts4%') OR (r.o_desc LIKE '%$tshirts5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -887,7 +917,10 @@ if($tshirts != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -932,7 +965,7 @@ if($shirts != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Shirts%' and ((r.o_desc LIKE '%shirts1%') OR (r.o_desc LIKE '%shirts2%') OR (r.o_desc LIKE '%shirts3%') OR (r.o_desc LIKE '%shirts4%') OR (r.o_desc LIKE '%shirts5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Shirts%') and ((r.o_desc LIKE '%$shirts1%') OR (r.o_desc LIKE '%$shirts2%') OR (r.o_desc LIKE '%$shirts3%') OR (r.o_desc LIKE '%$shirts4%') OR (r.o_desc LIKE '%$shirts5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -943,7 +976,10 @@ if($shirts != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -987,7 +1023,7 @@ if($jumpers != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Jumpers%' and ((r.o_desc LIKE '%jumpers1%') OR (r.o_desc LIKE '%jumpers2%') OR (r.o_desc LIKE '%jumpers3%') OR (r.o_desc LIKE '%jumpers4%') OR (r.o_desc LIKE '%jumpers5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Jumpers%') and ((r.o_desc LIKE '%$jumpers1%') OR (r.o_desc LIKE '%$jumpers2%') OR (r.o_desc LIKE '%$jumpers3%') OR (r.o_desc LIKE '%$jumpers4%') OR (r.o_desc LIKE '%$jumpers5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -998,7 +1034,10 @@ if($jumpers != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -1042,7 +1081,7 @@ if($sweats != "None")
                     <div class="men-item-carousel">
                         <div class="owl-men-item owl-carousel">
                         <?php
-                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and r.o_desc LIKE '%Sweatshirts%' and ((r.o_desc LIKE '%sweats1%')OR (r.o_desc LIKE '%sweats2%') OR (r.o_desc LIKE '%sweats3%') OR (r.o_desc LIKE '%sweats4%') OR (r.o_desc LIKE '%sweats5%'))";
+                            $sql="SELECT * from rec_bodytype r, body_type b where r.type_id = b.type_id and b.type_id = (select type_id from body_type where body_type_name = '$body_type') and (r.o_desc LIKE '%Sweatshirts%') and ((r.o_desc LIKE '%$sweats1%')OR (r.o_desc LIKE '%$sweats2%') OR (r.o_desc LIKE '%$sweats3%') OR (r.o_desc LIKE '%$sweats4%') OR (r.o_desc LIKE '%$sweats5%'))";
 
                             $result = $conn-> query($sql);
                             if ($result-> num_rows > 0){
@@ -1053,7 +1092,10 @@ if($sweats != "None")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }

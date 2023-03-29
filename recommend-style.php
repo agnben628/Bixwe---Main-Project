@@ -265,7 +265,10 @@ if($gender == "Female")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -308,7 +311,10 @@ if($gender == "Female")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -351,7 +357,10 @@ if($gender == "Female")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -394,7 +403,10 @@ if($gender == "Female")
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -442,7 +454,10 @@ else
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -485,7 +500,10 @@ else
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
                                 </div>
-                                
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
+                                </div>
                             </div>
                             <?php
                             }
@@ -529,6 +547,10 @@ else
                                 <div class="thumb">
                                    
                                     <img src="<?php echo $row['outfit'];?>" alt="">
+                                </div>
+                                <div class="down-content">
+                                    <span><?php echo $row['o_desc'];?></span>
+                                    
                                 </div>
                                 
                             </div>
